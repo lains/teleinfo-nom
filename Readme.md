@@ -1,4 +1,7 @@
 # teleinfo\_nom: a wannabe comprehensive teleinfo parser in nom
+[![Build Status](https://travis-ci.org/gaetronik/teleinfo-nom.svg)](https://travis-ci.org/gaetronik/teleinfo-nom)
+[![Crates.io](https://img.shields.io/crates/v/teleinfo-nom.svg)](https://crates.io/crates/teleinfo-nom)
+
 
 ## Purpose
 
