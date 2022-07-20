@@ -461,7 +461,7 @@ mod tests {
             String::from_utf8_lossy(include_bytes!("../../assets/stream_legacy_incomplete.txt"));
         assert_eq!(
             get_message(&data),
-            Err(nom::Err::Incomplete(nom::Needed::Size(1)))
+            Err(nom::Err::Incomplete(nom::Needed::Unknown))
         )
     }
 }
