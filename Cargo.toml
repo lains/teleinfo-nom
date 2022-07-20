@@ -14,5 +14,5 @@ license = "WTFPL"
 travis-ci = { repository = "gaetronik/teleinfo-nom", branch = "master" }
 
 [dependencies]
-nom = "5"
+nom = "7"
 chrono = "0.4"
