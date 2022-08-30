@@ -22,10 +22,10 @@ pub enum TeleinfoMode {
 pub struct TeleinfoDate {
     /// char representing the season might by 'h', 'e', or ' ' upper or lower case depending
     /// whether meter clock is synchronized or not
-    season: char,
+    pub season: char,
     /// the DateTime parsed from Teleinfo message
-    date: DateTime<Local>,
-    raw_value: String,
+    pub date: DateTime<Local>,
+    pub raw_value: String,
 }
 
 /// TeleinfoValue represents the value and date of a message line from Teleinfo
