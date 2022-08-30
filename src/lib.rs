@@ -306,15 +306,20 @@ fn parsed_vector_to_values(lines: Vec<TeleinfoTuple>) -> HashMap<String, Teleinf
 }
 
 fn build_message(raw_message: &str) -> Result<TeleinfoMessage> {
-    let (r, (lines, mode)) = parser::parser_message(raw_message).unwrap();
-    let mut result = TeleinfoMessage {
-        values: HashMap::new(),
-        mode,
-        valid: true,
-    };
-    result.valid = r.is_empty() && parser::validate_message(mode, lines.clone());
-    result.values = parsed_vector_to_values(lines);
-    Ok(result)
+    match parser::parser_message(raw_message) {
+        Ok(value) => {
+            let (r, (lines, mode)) = value;
+            let mut result = TeleinfoMessage {
+                values: HashMap::new(),
+                mode,
+                valid: true,
+            };
+            result.valid = r.is_empty() && parser::validate_message(mode, lines.clone());
+            result.values = parsed_vector_to_values(lines);
+            Ok(result)
+        },
+        Err(e) => Err(Error::new(ErrorKind::InvalidData, e.to_string())),
+    }
 }
 
 /// Read message from an readable object `source`, with `leftover` being the unparsed string
@@ -344,8 +349,12 @@ pub fn get_message<T: Read>(source: &mut T, leftover: String) -> Result<(String,
         let current_data = String::from_utf8_lossy(&current_clone);
         match parser::get_message(&current_data) {
             Ok((r, message)) => {
-                let result = build_message(message).unwrap();
-                return Ok((r.to_string(), result));
+                if let Ok(result) = build_message(message) {
+                    return Ok((r.to_string(), result));
+                }
+                else {
+                    return handle_nom_error();
+                }
             }
             Err(nom::Err::Incomplete(_)) => (),
             Err(_) => return handle_nom_error(),
